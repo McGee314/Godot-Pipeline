@@ -1,6 +1,10 @@
 import cv2
 import mediapipe as mp
 import numpy as np
+import socket
+import json
+import time
+import os
 
 class HandTracker:
     def __init__(self):
@@ -13,6 +17,22 @@ class HandTracker:
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5
         )
+        
+        # UDP Configuration for Godot communication
+        self.udp_host = os.getenv('GESTURE_UDP_HOST', '127.0.0.1')
+        self.udp_port = int(os.getenv('GESTURE_UDP_PORT', '9999'))
+        self.udp_socket = None
+        self.last_sent_gesture = None
+        self.last_sent_time = 0.0
+        
+        # Initialize UDP socket
+        try:
+            self.udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.udp_socket.settimeout(0.1)
+            print(f"✅ UDP gesture sender initialized: {self.udp_host}:{self.udp_port}")
+        except Exception as e:
+            print(f"⚠️ Failed to initialize UDP socket: {e}")
+            self.udp_socket = None
         
     def detect_hands(self, frame):
         """
@@ -102,6 +122,8 @@ class HandTracker:
                 cv2.putText(processed_frame, f"ARAH: {direction}", 
                            (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
                 print(f"Gesture detected: {direction}")
+                # Send gesture to Godot via UDP
+                self.send_gesture_to_godot(direction)
             else:
                 cv2.putText(processed_frame, "Tidak ada tangan terdeteksi", 
                            (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
@@ -130,6 +152,38 @@ class HandTracker:
         
         cap.release()
         cv2.destroyAllWindows()
+    
+    def send_gesture_to_godot(self, gesture):
+        """Send gesture command to Godot via UDP"""
+        if not self.udp_socket:
+            return
+        
+        # Rate limiting: only send if gesture changed or 100ms passed
+        current_time = time.time()
+        if gesture == self.last_sent_gesture and (current_time - self.last_sent_time) < 0.1:
+            return
+        
+        try:
+            # Create JSON message
+            message = {
+                "type": "gesture",
+                "gesture": gesture,
+                "timestamp": current_time
+            }
+            
+            # Send to Godot
+            data = json.dumps(message).encode('utf-8')
+            self.udp_socket.sendto(data, (self.udp_host, self.udp_port))
+            
+            self.last_sent_gesture = gesture
+            self.last_sent_time = current_time
+            
+            # Debug output
+            if gesture != "CENTER":
+                print(f"📤 Sent to Godot: {gesture}")
+                
+        except Exception as e:
+            print(f"⚠️ Failed to send gesture: {e}")
 
 # Test function
 if __name__ == "__main__":

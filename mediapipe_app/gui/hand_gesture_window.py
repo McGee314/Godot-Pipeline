@@ -403,6 +403,11 @@ Tips troubleshooting:
                 if direction != self.current_gesture:
                     self.current_gesture = direction
                     self.gesture_history.append(direction)
+                    # Send gesture to Godot
+                    try:
+                        self.hand_tracker.send_gesture_to_godot(direction)
+                    except Exception as e:
+                        print(f"Warning: failed to send gesture to Godot: {e}")
                     self.window.after(0, self.update_gesture_display, direction)
                 
                 # Draw direction on frame

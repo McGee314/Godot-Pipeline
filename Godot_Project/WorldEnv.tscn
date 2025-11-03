@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cfth8nv3d2fto"]
+
+[ext_resource type="PackedScene" uid="uid://eo08nkxkkkmv" path="res://Models/MQ-9 Reaper.glb" id="1_motc2"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4jdbs"]
+
+[node name="WorldEnv" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+mesh = SubResource("PlaneMesh_4jdbs")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_motc2")]

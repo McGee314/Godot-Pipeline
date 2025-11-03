@@ -1,0 +1,17 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1762135884
+Dji Tello 3D Model.glb::PackedScene::8844733695979969391::1762135884::1762135885::1::::<><>::
+GestureControl.tscn::PackedScene::3506817228424771238::1762001171::0::1::::<><>::uid://eo08nkxkkkmv::::res://Models/MQ-9 Reaper.glb<>res://gesture_receiver.gd
+GESTURE_INTEGRATION.md::TextFile::-1::1761922360::0::1::::<><>::
+gesture_receiver.gd::GDScript::-1::1761922223::0::1::::<>Node<>::
+icon.svg::CompressedTexture2D::8582056384178624543::1761908161::1761919334::1::::<><>::
+webcam_client_udp.gd::GDScript::-1::1762002724::0::1::::<>Control<>::
+webcam_client_udp.tscn::PackedScene::5266255151653717524::1762135570::0::1::::<><>::res://webcam_client_udp.gd
+WorldEnv.tscn::PackedScene::5163493429573439728::1762135569::0::1::::<><>::uid://eo08nkxkkkmv::::res://Models/MQ-9 Reaper.glb
+::res://Models/::1761919334
+Drone.tscn::PackedScene::5928124330350005713::1761908411::0::1::::<><>::
+MQ-9 Reaper.glb::PackedScene::311234218437368741::1761908201::1761919334::1::::<><>::uid://bhxvicnsl4nye::::res://Models/MQ-9 Reaper_0.png<>uid://c3awkppe2mlxs::::res://Models/MQ-9 Reaper_1.png<>uid://dsihxfdhu8nge::::res://Models/MQ-9 Reaper_2.png<>uid://dhkex3uki0dgu::::res://Models/MQ-9 Reaper_3.png
+MQ-9 Reaper_0.png::CompressedTexture2D::2926512746664888192::1761908201::1761919334::1::::<><>::
+MQ-9 Reaper_1.png::CompressedTexture2D::6739483432271646364::1761908202::1761919334::1::::<><>::
+MQ-9 Reaper_2.png::CompressedTexture2D::8439642618402793068::1761908203::1761919334::1::::<><>::
+MQ-9 Reaper_3.png::CompressedTexture2D::7671513177332929652::1761908205::1761919334::1::::<><>::

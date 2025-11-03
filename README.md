@@ -6,6 +6,7 @@ Aplikasi Python sederhana menggunakan MediaPipe untuk Face Detection dan Hand Tr
 
 1. **Face Detection Login** - Login menggunakan deteksi wajah
 2. **Hand Gesture Control** - Kontrol gesture menggunakan tracking tangan (UP, DOWN, LEFT, RIGHT)
+3. **🎮 Integrasi Godot** - Kontrol objek 3D di Godot Engine dengan gesture tangan real-time via UDP
 
 ## Struktur Project
 
@@ -29,7 +30,14 @@ Pipeline/
 │   └── README.md            # Documentation
 ├── run_gui.sh              # GUI launcher (macOS/Linux)
 ├── run_gui.bat             # GUI launcher (Windows)
-└── run_app.sh              # Terminal launcher
+├── run_app.sh              # Terminal launcher
+├── test_gesture_udp.py     # Test UDP gesture connection
+├── WebcamServer.py         # UDP webcam streaming server
+└── Godot_Project/          # Godot Engine integration
+    ├── gesture_receiver.gd      # Gesture UDP receiver script
+    ├── GestureControl.tscn      # Scene with gesture control
+    ├── GESTURE_INTEGRATION.md   # Integration documentation
+    └── Models/                  # 3D models (e.g., drone)
 ```
 
 ## Cara Setup dan Menjalankan
@@ -227,10 +235,57 @@ cd mediapipe_app
 python main.py
 ```
 
-## Tips Penggunaan
+## Tips dan Best Practices
 
-1. **Pencahayaan**: Gunakan pencahayaan yang cukup untuk hasil deteksi terbaik
-2. **Jarak**: Posisikan wajah/tangan 30-60 cm dari kamera
-3. **Background**: Gunakan background yang kontras dengan kulit
+1. **Lighting**: Pastikan pencahayaan ruangan cukup untuk deteksi optimal
+2. **Distance**: Jarak ideal antara kamera dan wajah/tangan: 30-60 cm
+3. **Background**: Gunakan background yang kontras untuk hasil lebih baik
 4. **Stabilitas**: Gerakkan tangan secara perlahan untuk gesture yang stabil
 5. **Performance**: Tutup aplikasi lain yang menggunakan kamera untuk performa optimal
+
+## 🎮 Integrasi dengan Godot Engine
+
+### Setup Cepat
+
+1. **Jalankan Godot Project**
+   ```bash
+   # Buka Godot Engine
+   # Load project dari folder Godot_Project/
+   # Buka scene: GestureControl.tscn
+   # Klik Play (F5)
+   ```
+
+2. **Jalankan MediaPipe Hand Tracking**
+   ```bash
+   # Terminal/Command Prompt
+   ./run_gui.sh  # atau run_gui.bat untuk Windows
+   # Pilih "Hand Gesture Control"
+   # Mulai tracking
+   ```
+
+3. **Kontrol Objek dengan Tangan**
+   - Gerakkan tangan **ATAS** → Objek bergerak forward
+   - Gerakkan tangan **BAWAH** → Objek bergerak backward
+   - Gerakkan tangan **KIRI** → Objek bergerak ke kiri
+   - Gerakkan tangan **KANAN** → Objek bergerak ke kanan
+
+### Test Koneksi UDP
+
+```bash
+# Test apakah gesture terkirim
+python test_gesture_udp.py
+# Pilih option 1 untuk sender test
+# Pilih option 2 untuk receiver test
+```
+
+### Dokumentasi Lengkap
+
+Lihat dokumentasi lengkap integrasi Godot di:
+📖 `Godot_Project/GESTURE_INTEGRATION.md`
+
+### Troubleshooting Godot
+
+- **Port conflict**: Pastikan port 9999 tidak dipakai aplikasi lain
+- **No movement**: Check Inspector → GestureReceiver → controlled_object
+- **Too fast/slow**: Adjust `move_speed` di Inspector (default: 5.0)
+- **Firewall**: Allow UDP port 9999 in firewall settings

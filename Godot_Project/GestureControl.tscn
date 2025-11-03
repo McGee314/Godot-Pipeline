@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://bp7y1dd454yp7"]
+
+[ext_resource type="PackedScene" uid="uid://dyapqblkrqmi6" path="res://Dji Tello 3D Model.glb" id="2_13ao1"]
+[ext_resource type="Script" path="res://gesture_receiver.gd" id="2_gesture"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
+
+[node name="GestureControlScene" type="Node3D"]
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+mesh = SubResource("PlaneMesh_ground")
+
+[node name="GestureReceiver" type="Node" parent="."]
+script = ExtResource("2_gesture")
+controlled_object = NodePath("")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 8, 12)
+fov = 60.0
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.422618, 0.906308, 0, -0.906308, -0.422618, 0, 10, 0)
+shadow_enabled = true
+
+[node name="StatusLabel" type="Label" parent="."]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 80.0
+text = "🎮 Hand Gesture Control
+Waiting for gestures..."
+vertical_alignment = 1
+
+[node name="InfoLabel" type="Label" parent="."]
+offset_left = 20.0
+offset_top = 100.0
+offset_right = 400.0
+offset_bottom = 200.0
+text = "📡 Listening on UDP port 9999
+👋 Move your hand to control the drone:
+   • UP - Move Forward
+   • DOWN - Move Backward
+   • LEFT - Move Left
+   • RIGHT - Move Right"
+
+[node name="Sketchfab_Scene2" parent="." instance=ExtResource("2_13ao1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.824005, 2.79888, 1.39186)
