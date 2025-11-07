@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://nlx2nj4tsjic"
+path="res://.godot/imported/gate-door-window.obj-a456ea12d68c4382ee5c140da6b4c8a9.mesh"
+
+[deps]
+
+files=["res://.godot/imported/gate-door-window.obj-a456ea12d68c4382ee5c140da6b4c8a9.mesh"]
+
+source_file="res://Models/Modular Dungeon Kit 1.0/Models/OBJ format/gate-door-window.obj"
+dest_files=["res://.godot/imported/gate-door-window.obj-a456ea12d68c4382ee5c140da6b4c8a9.mesh", "res://.godot/imported/gate-door-window.obj-a456ea12d68c4382ee5c140da6b4c8a9.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

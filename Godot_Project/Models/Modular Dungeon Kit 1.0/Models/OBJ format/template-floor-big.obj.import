@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://24yrqpf3bof2"
+path="res://.godot/imported/template-floor-big.obj-87c7795eedf38c82e960527fbc78d468.mesh"
+
+[deps]
+
+files=["res://.godot/imported/template-floor-big.obj-87c7795eedf38c82e960527fbc78d468.mesh"]
+
+source_file="res://Models/Modular Dungeon Kit 1.0/Models/OBJ format/template-floor-big.obj"
+dest_files=["res://.godot/imported/template-floor-big.obj-87c7795eedf38c82e960527fbc78d468.mesh", "res://.godot/imported/template-floor-big.obj-87c7795eedf38c82e960527fbc78d468.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

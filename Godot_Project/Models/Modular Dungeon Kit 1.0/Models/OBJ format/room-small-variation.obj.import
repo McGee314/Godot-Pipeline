@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://s2rshuuegbfy"
+path="res://.godot/imported/room-small-variation.obj-ad0ff54233cdefbc41c682e5b962141d.mesh"
+
+[deps]
+
+files=["res://.godot/imported/room-small-variation.obj-ad0ff54233cdefbc41c682e5b962141d.mesh"]
+
+source_file="res://Models/Modular Dungeon Kit 1.0/Models/OBJ format/room-small-variation.obj"
+dest_files=["res://.godot/imported/room-small-variation.obj-ad0ff54233cdefbc41c682e5b962141d.mesh", "res://.godot/imported/room-small-variation.obj-ad0ff54233cdefbc41c682e5b962141d.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

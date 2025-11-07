@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dw4fm5xg4st53"
+path="res://.godot/imported/template-wall-stairs.obj-7afc2f14281731a8410513afb71d153c.mesh"
+
+[deps]
+
+files=["res://.godot/imported/template-wall-stairs.obj-7afc2f14281731a8410513afb71d153c.mesh"]
+
+source_file="res://Models/Modular Dungeon Kit 1.0/Models/OBJ format/template-wall-stairs.obj"
+dest_files=["res://.godot/imported/template-wall-stairs.obj-7afc2f14281731a8410513afb71d153c.mesh", "res://.godot/imported/template-wall-stairs.obj-7afc2f14281731a8410513afb71d153c.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

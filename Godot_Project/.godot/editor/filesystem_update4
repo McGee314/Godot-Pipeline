@@ -1,3 +1,2 @@
 res://WorldEnv.tscn
-res://webcam_client_udp.tscn
-res://GestureControl.tscn
+res://World.tres

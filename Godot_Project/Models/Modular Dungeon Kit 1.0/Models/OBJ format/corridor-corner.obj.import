@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cn83ugpg2budu"
+path="res://.godot/imported/corridor-corner.obj-36236abb876cd8224e1e98278229dfca.mesh"
+
+[deps]
+
+files=["res://.godot/imported/corridor-corner.obj-36236abb876cd8224e1e98278229dfca.mesh"]
+
+source_file="res://Models/Modular Dungeon Kit 1.0/Models/OBJ format/corridor-corner.obj"
+dest_files=["res://.godot/imported/corridor-corner.obj-36236abb876cd8224e1e98278229dfca.mesh", "res://.godot/imported/corridor-corner.obj-36236abb876cd8224e1e98278229dfca.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

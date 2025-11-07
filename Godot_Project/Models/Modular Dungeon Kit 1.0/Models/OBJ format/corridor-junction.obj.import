@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://y8wepcqppild"
+path="res://.godot/imported/corridor-junction.obj-f870c7c74caee9313e3ef766e8513d96.mesh"
+
+[deps]
+
+files=["res://.godot/imported/corridor-junction.obj-f870c7c74caee9313e3ef766e8513d96.mesh"]
+
+source_file="res://Models/Modular Dungeon Kit 1.0/Models/OBJ format/corridor-junction.obj"
+dest_files=["res://.godot/imported/corridor-junction.obj-f870c7c74caee9313e3ef766e8513d96.mesh", "res://.godot/imported/corridor-junction.obj-f870c7c74caee9313e3ef766e8513d96.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

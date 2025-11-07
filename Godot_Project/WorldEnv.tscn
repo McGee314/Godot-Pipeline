@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cfth8nv3d2fto"]
 
-[ext_resource type="PackedScene" uid="uid://eo08nkxkkkmv" path="res://Models/MQ-9 Reaper.glb" id="1_motc2"]
+[ext_resource type="MeshLibrary" uid="uid://cm7tb4av5exeu" path="res://World.tres" id="1_n6m34"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_4jdbs"]
 
@@ -10,4 +10,8 @@
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
 mesh = SubResource("PlaneMesh_4jdbs")
 
-[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_motc2")]
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("1_n6m34")
+data = {
+"cells": PackedInt32Array(0, 65534, 655376, 0, 6, 655378, 10, 65534, 655375, 10, 4, 1048586, 10, 10, 1048596, 18, 10, 655379, 18, 3, 1048596)
+}
