@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2d4hk3ih3k0w"]
+
+[ext_resource type="PackedScene" uid="uid://dyapqblkrqmi6" path="res://Models/Dji Tello 3D Model.glb" id="1_aoqpw"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_aoqpw")]

@@ -1,0 +1,115 @@
+[gd_scene load_steps=38 format=3 uid="uid://d2cjbn4wklfen"]
+
+[ext_resource type="PackedScene" uid="uid://2k8uxodb882k" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-corner.glb" id="1_o2tl3"]
+[ext_resource type="PackedScene" uid="uid://b7w1slax7b15k" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-end.glb" id="2_dvhl1"]
+[ext_resource type="PackedScene" uid="uid://beggqm45lkijd" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-intersection.glb" id="3_474cq"]
+[ext_resource type="PackedScene" uid="uid://lhqw8bw2wd1w" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-junction.glb" id="4_4sovg"]
+[ext_resource type="PackedScene" uid="uid://cj4evmpk6yax6" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-transition.glb" id="5_q8yiq"]
+[ext_resource type="PackedScene" uid="uid://b2s0a58k5tey6" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-wide-corner.glb" id="6_ecmkk"]
+[ext_resource type="PackedScene" uid="uid://b5db0ojnfrsbv" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-wide-end.glb" id="7_lx50l"]
+[ext_resource type="PackedScene" uid="uid://s8iful7jnhre" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-wide-intersection.glb" id="8_ofvwg"]
+[ext_resource type="PackedScene" uid="uid://c2p16txrcr72b" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-wide-junction.glb" id="9_ovudu"]
+[ext_resource type="PackedScene" uid="uid://4rs172ms0cb8" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-wide.glb" id="10_yocxc"]
+[ext_resource type="PackedScene" uid="uid://dyxyi5fxo6gje" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor.glb" id="11_n8v5n"]
+[ext_resource type="PackedScene" uid="uid://120y34bhwolk" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/gate-door-window.glb" id="12_jjgak"]
+[ext_resource type="PackedScene" uid="uid://chllfvkf0gt7m" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/gate-door.glb" id="13_e4kes"]
+[ext_resource type="PackedScene" uid="uid://diu5mffldfx3k" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/gate.glb" id="14_c6tbd"]
+[ext_resource type="PackedScene" uid="uid://ckhcrwm5k8lvc" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/room-corner.glb" id="15_6ufdx"]
+[ext_resource type="PackedScene" uid="uid://cy1hq4cfike0x" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/room-large-variation.glb" id="16_yclxl"]
+[ext_resource type="PackedScene" uid="uid://r7l50flpk7of" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/room-large.glb" id="17_5ho34"]
+[ext_resource type="PackedScene" uid="uid://cp8ny5jpyu18o" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/room-small-variation.glb" id="18_chukp"]
+[ext_resource type="PackedScene" uid="uid://djy26tgckxihb" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/room-small.glb" id="19_0bjn4"]
+[ext_resource type="PackedScene" uid="uid://clbh685fbeabd" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/room-wide-variation.glb" id="20_01pk7"]
+[ext_resource type="PackedScene" uid="uid://d3cejwxkfocp5" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/room-wide.glb" id="21_wv0uu"]
+[ext_resource type="PackedScene" uid="uid://cj1j8ww63kes8" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/stairs-wide.glb" id="22_td8p7"]
+[ext_resource type="PackedScene" uid="uid://pa8bom8rrl1l" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/stairs.glb" id="23_rbuj4"]
+[ext_resource type="PackedScene" uid="uid://cpatwalwl8hi3" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-corner.glb" id="24_mkk6s"]
+[ext_resource type="PackedScene" uid="uid://ckolxn8q7vg4q" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-detail.glb" id="25_ignwu"]
+[ext_resource type="PackedScene" uid="uid://bx58x5e6hswxb" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-floor-big.glb" id="26_w1g36"]
+[ext_resource type="PackedScene" uid="uid://btbasa48cv6i6" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-floor-detail-a.glb" id="27_kgsi0"]
+[ext_resource type="PackedScene" uid="uid://qkg743syf8rd" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-floor-detail.glb" id="28_y58m0"]
+[ext_resource type="PackedScene" uid="uid://drtdmnbhld2bm" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-floor-layer-raised.glb" id="29_nupua"]
+[ext_resource type="PackedScene" uid="uid://dcjmlplxpdgia" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-floor-layer.glb" id="30_qvp53"]
+[ext_resource type="PackedScene" uid="uid://cx7bglqx2nikc" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-floor.glb" id="31_bihvu"]
+[ext_resource type="PackedScene" uid="uid://bm7rwiaerkmny" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-wall-corner.glb" id="32_p2bro"]
+[ext_resource type="PackedScene" uid="uid://7f6kp6huf2uc" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-wall-detail-a.glb" id="33_sdi34"]
+[ext_resource type="PackedScene" uid="uid://bp7oadfi72rx3" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-wall-half.glb" id="34_e4j3v"]
+[ext_resource type="PackedScene" uid="uid://dhhgpdha4uhsg" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-wall-stairs.glb" id="35_nf8dm"]
+[ext_resource type="PackedScene" uid="uid://byqxq86gwaf6o" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-wall-top.glb" id="36_nclld"]
+[ext_resource type="PackedScene" uid="uid://dipfavv76he6e" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/template-wall.glb" id="37_moumm"]
+
+[node name="Tiles" type="Node3D"]
+
+[node name="corridor-corner2" parent="." instance=ExtResource("1_o2tl3")]
+
+[node name="corridor-end2" parent="." instance=ExtResource("2_dvhl1")]
+
+[node name="corridor-intersection2" parent="." instance=ExtResource("3_474cq")]
+
+[node name="corridor-junction2" parent="." instance=ExtResource("4_4sovg")]
+
+[node name="corridor-transition2" parent="." instance=ExtResource("5_q8yiq")]
+
+[node name="corridor-wide-corner2" parent="." instance=ExtResource("6_ecmkk")]
+
+[node name="corridor-wide-end2" parent="." instance=ExtResource("7_lx50l")]
+
+[node name="corridor-wide-intersection2" parent="." instance=ExtResource("8_ofvwg")]
+
+[node name="corridor-wide-junction2" parent="." instance=ExtResource("9_ovudu")]
+
+[node name="corridor-wide2" parent="." instance=ExtResource("10_yocxc")]
+
+[node name="corridor2" parent="." instance=ExtResource("11_n8v5n")]
+
+[node name="gate-door-window2" parent="." instance=ExtResource("12_jjgak")]
+
+[node name="gate-door2" parent="." instance=ExtResource("13_e4kes")]
+
+[node name="gate2" parent="." instance=ExtResource("14_c6tbd")]
+
+[node name="room-corner2" parent="." instance=ExtResource("15_6ufdx")]
+
+[node name="room-large-variation2" parent="." instance=ExtResource("16_yclxl")]
+
+[node name="room-large2" parent="." instance=ExtResource("17_5ho34")]
+
+[node name="room-small-variation2" parent="." instance=ExtResource("18_chukp")]
+
+[node name="room-small2" parent="." instance=ExtResource("19_0bjn4")]
+
+[node name="room-wide-variation2" parent="." instance=ExtResource("20_01pk7")]
+
+[node name="room-wide2" parent="." instance=ExtResource("21_wv0uu")]
+
+[node name="stairs-wide2" parent="." instance=ExtResource("22_td8p7")]
+
+[node name="stairs2" parent="." instance=ExtResource("23_rbuj4")]
+
+[node name="template-corner2" parent="." instance=ExtResource("24_mkk6s")]
+
+[node name="template-detail2" parent="." instance=ExtResource("25_ignwu")]
+
+[node name="template-floor-big2" parent="." instance=ExtResource("26_w1g36")]
+
+[node name="template-floor-detail-a2" parent="." instance=ExtResource("27_kgsi0")]
+
+[node name="template-floor-detail2" parent="." instance=ExtResource("28_y58m0")]
+
+[node name="template-floor-layer-raised2" parent="." instance=ExtResource("29_nupua")]
+
+[node name="template-floor-layer2" parent="." instance=ExtResource("30_qvp53")]
+
+[node name="template-floor2" parent="." instance=ExtResource("31_bihvu")]
+
+[node name="template-wall-corner2" parent="." instance=ExtResource("32_p2bro")]
+
+[node name="template-wall-detail-a2" parent="." instance=ExtResource("33_sdi34")]
+
+[node name="template-wall-half2" parent="." instance=ExtResource("34_e4j3v")]
+
+[node name="template-wall-stairs2" parent="." instance=ExtResource("35_nf8dm")]
+
+[node name="template-wall-top2" parent="." instance=ExtResource("36_nclld")]
+
+[node name="template-wall2" parent="." instance=ExtResource("37_moumm")]

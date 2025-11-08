@@ -1,2 +1,8 @@
-GridMap
 CollisionShape3D
+CharacterBody3D
+MeshInstance3D
+SpotLight3D
+WorldEnvironment
+Camera3D
+DirectionalLight3D
+GridMap
