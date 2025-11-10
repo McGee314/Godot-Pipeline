@@ -1,8 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://cfth8nv3d2fto"]
 
-[ext_resource type="MeshLibrary" uid="uid://cm7tb4av5exeu" path="res://World.tres" id="1_m31vh"]
+[ext_resource type="MeshLibrary" uid="uid://cm7tb4av5exeu" path="res://World.tres" id="1_mc78j"]
 [ext_resource type="PackedScene" uid="uid://dyapqblkrqmi6" path="res://Models/Dji Tello 3D Model.glb" id="2_epmei"]
 [ext_resource type="Script" path="res://Scripts/drone.gd" id="3_1p16b"]
+[ext_resource type="PackedScene" uid="uid://ctu1qggt8t5u8" path="res://Models/Logo Polban.glb" id="4_owatd"]
 
 [sub_resource type="Environment" id="Environment_g236s"]
 background_mode = 1
@@ -19,8 +20,6 @@ volumetric_fog_density = 0.0605
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pcgwu"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_2nh58"]
-
 [node name="WorldEnv" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -30,12 +29,25 @@ environment = SubResource("Environment_g236s")
 transform = Transform3D(-0.661076, -0.750319, -1.57418e-08, 0.698937, -0.615806, 0.36369, -0.272884, 0.240427, 0.93152, 1.65805, 11.2763, 4.67012)
 sky_mode = 1
 
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="DirectionalLight3D"]
+transform = Transform3D(-0.774672, -0.567263, -0.279456, 0.568246, -0.430566, -0.70122, 0.277452, -0.702015, 0.655892, -24.6122, -12.616, 16.4686)
+sky_mode = 1
+
 [node name="GridMap" type="GridMap" parent="."]
-mesh_library = ExtResource("1_m31vh")
+mesh_library = ExtResource("1_mc78j")
 data = {
-"cells": PackedInt32Array(0, 65534, 655376, 0, 6, 655378, 10, 65534, 655375, 10, 4, 655371, 10, 10, 1048596, 18, 10, 655379, 20, 65534, 19, 65526, 65534, 1441807, 65526, 6, 1441809, 65530, 6, 655370, 65532, 6, 655370, 24, 10, 10, 26, 10, 0, 26, 8, 655360, 28, 8, 0, 28, 6, 1048586, 28, 4, 1048586, 28, 2, 1048586, 28, 0, 1048576, 26, 0, 1441792, 26, 65534, 1048579, 5, 65534, 1048589, 0, 3, 13, 65531, 65534, 1441805, 0, 65529, 655373, 65520, 6, 1441806, 65520, 2, 1441802, 65520, 0, 1048576, 65516, 0, 655364, 65513, 0, 1441797, 65513, 65532, 1441801, 65520, 65534, 1441792, 65520, 65532, 1048576, 65518, 65532, 1441792, 6, 10, 655360, 6, 12, 0, 2, 12, 1441814, 0, 12, 1048598, 3, 6, 1048608, 0, 9, 32, 65532, 12, 10, 65526, 10, 1441792, 65530, 12, 655370, 65528, 12, 1441792, 65528, 10, 1048576, 65513, 65528, 1048583, 65515, 65529, 1048612, 65515, 65527, 1048612, 65514, 65526, 655396, 65512, 65526, 655396, 65511, 65527, 1441828, 65511, 65529, 1441828, 65518, 65531, 655396, 65526, 65529, 655396, 1, 12, 1441803, 13, 10, 1048587, 23, 10, 1048587, 25, 65534, 1048587, 26, 65532, 1048586, 26, 65530, 1048586, 26, 65529, 1048586, -524173, 778, 1048577, -524162, 859, 1048577, -524105, 1239, 1048577, 10, 65528, 1048586, 10, 65526, 655363, 12, 65526, 655370, 14, 65526, 655370, 16, 65526, 655370, 18, 65526, 655370, 20, 65526, 655370, 22, 65526, 655370, 24, 65526, 655370, 26, 65526, 1048576, 26, 65528, 1441802, 8, 65526, 655370, 6, 65526, 655370, 0, 65526, 655374)
+"cells": PackedInt32Array(0, 65534, 655376, 0, 6, 655378, 10, 65534, 655375, 10, 4, 1441802, 10, 10, 1048596, 18, 10, 655379, 20, 65534, 19, 65526, 65534, 1441807, 65526, 6, 1441809, 65530, 6, 655370, 65532, 6, 655370, 24, 10, 10, 26, 10, 0, 26, 8, 655360, 28, 8, 0, 28, 6, 1048586, 28, 4, 1048586, 28, 2, 1048586, 28, 0, 1048576, 26, 0, 1441792, 26, 65534, 1048579, 5, 65534, 1048589, 0, 3, 13, 65531, 65534, 1441805, 0, 65529, 655373, 65520, 6, 1441806, 65520, 2, 1441802, 65520, 0, 1048576, 65516, 0, 655364, 65513, 0, 1441797, 65513, 65532, 1441801, 65520, 65534, 1441792, 65520, 65532, 1048576, 65518, 65532, 1441792, 6, 10, 655360, 6, 12, 0, 2, 12, 1441814, 0, 12, 1048598, 3, 6, 1048608, 0, 9, 32, 65532, 12, 10, 65526, 10, 1441792, 65528, 12, 1441792, 65528, 10, 1048576, 65513, 65528, 1048583, 65515, 65529, 1048612, 65515, 65527, 1048612, 65514, 65526, 655396, 65512, 65526, 655396, 65511, 65527, 1441828, 65511, 65529, 1441828, 65518, 65531, 655396, 65526, 65529, 655396, 13, 10, 1048587, 23, 10, 1048587, 25, 65534, 1048587, 26, 65532, 1048586, 26, 65530, 1048586, 26, 65529, 1048586, -524173, 778, 1048577, -524162, 859, 1048577, -524105, 1239, 1048577, 10, 65528, 1048586, 10, 65526, 655363, 12, 65526, 655370, 14, 65526, 655370, 16, 65526, 655370, 18, 65526, 655370, 20, 65526, 655370, 22, 65526, 655370, 24, 65526, 655370, 26, 65526, 1048576, 26, 65528, 1441802, 8, 65526, 655370, 6, 65526, 655370, 0, 65526, 655374, 4, 65526, 10, 65530, 12, 655370, 131073, 12, 1441803, 10, 18, 22, 65546, 19, 35)
 }
 metadata/_editor_floor_ = Vector3(0, 1, 0)
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 3.55198e-15, 7.20469e-17, 0, -0.0202794, 0.999794, 3.55271e-15, -0.999794, -0.0202794, 2.98023e-08, 4.83848, 0.889438)
+visible = false
+light_energy = 16.0
+light_volumetric_fog_energy = 2.131
+shadow_enabled = true
+spot_angle = 19.55
+spot_angle_attenuation = 0.00418663
 
 [node name="Drone" parent="." instance=ExtResource("2_epmei")]
 transform = Transform3D(-4.80825e-09, 0, 0.11, 0, 0.11, 0, -0.11, 0, -4.80825e-09, -0.330218, 2.14783, 1.02226)
@@ -47,13 +59,17 @@ transform = Transform3D(-3.97376e-07, 0.981812, -9.03774, 0, 9.03774, 0.981812, 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Drone"]
 shape = SubResource("CapsuleShape3D_pcgwu")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Drone"]
-mesh = SubResource("CapsuleMesh_2nh58")
+[node name="Logo Polban" parent="." instance=ExtResource("4_owatd")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -5.45731, 1.85844, -12.5458)
 
-[node name="SpotLight3D2" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.0202794, 0.999794, 0, -0.999794, -0.0202794, 0, 4.83848, 0.889438)
-light_energy = 16.0
-light_volumetric_fog_energy = 2.131
-shadow_enabled = true
-spot_angle = 19.55
-spot_angle_attenuation = 0.00418663
+[node name="Logo Polban2" parent="." instance=ExtResource("4_owatd")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 6.02609, 1.89671, -12.5887)
+
+[node name="Logo Polban3" parent="." instance=ExtResource("4_owatd")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 11.4444, 1.85844, 2.44841)
+
+[node name="Logo Polban4" parent="." instance=ExtResource("4_owatd")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 15.3893, 1.85844, 16.3531)
+
+[node name="Logo Polban5" parent="." instance=ExtResource("4_owatd")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 15.3893, 1.85844, 26.948)

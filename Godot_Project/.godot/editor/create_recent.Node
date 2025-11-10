@@ -1,6 +1,8 @@
 CollisionShape3D
-CharacterBody3D
+Area3D
 MeshInstance3D
+StaticBody3D
+CharacterBody3D
 SpotLight3D
 WorldEnvironment
 Camera3D

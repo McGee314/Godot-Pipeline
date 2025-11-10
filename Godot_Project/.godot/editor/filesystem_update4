@@ -1,12 +1,8 @@
-res://WorldEnv.tscn
-res://World.tres
-res://webcam_client_udp.tscn
-res://Tiles.tscn
-res://GestureControl.tscn
-res://Scene/webcam_client_udp.tscn
 res://Scene/WorldEnv.tscn
+res://Scene/WorldCollision.tres
+res://Scene/webcam_client_udp.tscn
 res://Scene/GestureControl.tscn
 res://Scene/Tiles.tscn
-res://Scripts/camera_3d.gd
-res://Scripts/drone.gd
+res://Scene/sketchfab_scene.tscn
 res://Scene/Drone.tscn
+res://World.tres

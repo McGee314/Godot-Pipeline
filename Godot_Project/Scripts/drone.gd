@@ -4,7 +4,7 @@ extends CharacterBody3D
 @export var fly_speed: float = 5.0
 @export var down_speed: float = 3.0
 @export var horizontal_speed: float = 8.0
-@export var horizontal_speed_boost: float = 20.0  # Speed when holding Shift
+@export var horizontal_speed_boost: float = 50.0 # Speed when holding Shift
 @export var acceleration: float = 7.0
 @export var deceleration: float = 7.0
 @export var rotation_speed: float = 2.5

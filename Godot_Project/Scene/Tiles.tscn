@@ -41,6 +41,7 @@
 [node name="Tiles" type="Node3D"]
 
 [node name="corridor-corner2" parent="." instance=ExtResource("1_o2tl3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 19.5228, 0)
 
 [node name="corridor-end2" parent="." instance=ExtResource("2_dvhl1")]
 
