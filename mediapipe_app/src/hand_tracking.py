@@ -53,27 +53,44 @@ class HandTracker:
                 
         return results, frame
     
-    def count_fingers(self, landmarks):
+    def count_fingers(self, landmarks, hand_label):
         """
-        Count number of extended fingers
-        Returns: number of fingers up (0-5)
+        Count number of extended fingers and identify which fingers are up
+        Returns: (finger_count, fingers_up_list)
+        fingers_up_list: [thumb, index, middle, ring, pinky] - True if up, False if down
+        
+        hand_label: "Left" or "Right" - needed for correct thumb detection
         """
         # Finger tip and PIP landmark indices
         finger_tips = [4, 8, 12, 16, 20]  # Thumb, Index, Middle, Ring, Pinky
         finger_pips = [3, 6, 10, 14, 18]  # PIP joints
         
-        fingers_up = 0
+        fingers_up_list = []
         
-        # Thumb (special case - check horizontal distance)
-        if landmarks[finger_tips[0]].x < landmarks[finger_pips[0]].x:
-            fingers_up += 1
+        # Thumb (special case - check horizontal distance, direction depends on hand)
+        # For Right hand: thumb is up if tip is to the LEFT of PIP (x < pip_x)
+        # For Left hand: thumb is up if tip is to the RIGHT of PIP (x > pip_x)
+        if hand_label == "Right":
+            if landmarks[finger_tips[0]].x < landmarks[finger_pips[0]].x:
+                fingers_up_list.append(True)
+            else:
+                fingers_up_list.append(False)
+        else:  # Left hand
+            if landmarks[finger_tips[0]].x > landmarks[finger_pips[0]].x:
+                fingers_up_list.append(True)
+            else:
+                fingers_up_list.append(False)
         
         # Other 4 fingers (check if tip is above PIP)
         for i in range(1, 5):
             if landmarks[finger_tips[i]].y < landmarks[finger_pips[i]].y:
-                fingers_up += 1
+                fingers_up_list.append(True)
+            else:
+                fingers_up_list.append(False)
         
-        return fingers_up
+        finger_count = sum(fingers_up_list)
+        
+        return finger_count, fingers_up_list
     
     def get_hand_tilt(self, landmarks):
         """
@@ -98,46 +115,60 @@ class HandTracker:
     
     def detect_gesture(self, landmarks, hand_label):
         """
-        Detect gesture based on finger count and hand tilt
+        Detect gesture based on specific finger combinations
         
         Left hand gestures (WASD movement):
-        - 1 finger straight: FORWARD (W)
-        - 1 finger tilted right: RIGHT (D)
-        - 1 finger tilted left: LEFT (A)
-        - 2 fingers: BACKWARD (S)
+        - Fist (0 fingers): FORWARD (W)
+        - All 5 fingers: BACKWARD (S)
+        - Index + Thumb (2 fingers): RIGHT (D)
+        - Index + Middle (2 fingers): LEFT (A)
         
         Right hand gestures (Vertical + Rotation):
-        - 1 finger straight: UP
-        - 2 fingers: DOWN
-        - 1 finger tilted right: ROTATE_RIGHT
-        - 1 finger tilted left: ROTATE_LEFT
+        - Fist (0 fingers): UP
+        - All 5 fingers: DOWN
+        - Index + Middle (2 fingers): ROTATE_RIGHT
+        - Index + Thumb (2 fingers): ROTATE_LEFT
         
         Returns: gesture command string
         """
-        finger_count = self.count_fingers(landmarks)
-        hand_tilt = self.get_hand_tilt(landmarks)
+        finger_count, fingers_up = self.count_fingers(landmarks, hand_label)
+        # fingers_up = [thumb, index, middle, ring, pinky]
+        
+        thumb_up = fingers_up[0]
+        index_up = fingers_up[1]
+        middle_up = fingers_up[2]
+        ring_up = fingers_up[3]
+        pinky_up = fingers_up[4]
         
         if hand_label == "Left":  # Left hand = WASD
-            if finger_count == 1:
-                if hand_tilt == "RIGHT":
-                    return "RIGHT"  # D
-                elif hand_tilt == "LEFT":
-                    return "LEFT"  # A
-                else:
-                    return "FORWARD"  # W
+            if finger_count == 0:
+                # Fist = FORWARD
+                return "FORWARD"
+            elif finger_count == 5:
+                # All 5 fingers = BACKWARD
+                return "BACKWARD"
             elif finger_count == 2:
-                return "BACKWARD"  # S
+                if thumb_up and index_up and not middle_up:
+                    # Index + Thumb ONLY = RIGHT
+                    return "RIGHT"
+                elif index_up and middle_up and not thumb_up:
+                    # Index + Middle ONLY = LEFT
+                    return "LEFT"
         
         elif hand_label == "Right":  # Right hand = Up/Down + Rotation
-            if finger_count == 1:
-                if hand_tilt == "RIGHT":
-                    return "ROTATE_RIGHT"
-                elif hand_tilt == "LEFT":
-                    return "ROTATE_LEFT"
-                else:
-                    return "UP"  # Straight up
-            elif finger_count == 2:
+            if finger_count == 0:
+                # Fist = UP
+                return "UP"
+            elif finger_count == 5:
+                # All fingers = DOWN
                 return "DOWN"
+            elif finger_count == 2:
+                if index_up and middle_up and not thumb_up:
+                    # Index + Middle ONLY = ROTATE_RIGHT
+                    return "ROTATE_RIGHT"
+                elif thumb_up and index_up and not middle_up:
+                    # Index + Thumb ONLY = ROTATE_LEFT
+                    return "ROTATE_LEFT"
         
         return None
     
@@ -154,15 +185,15 @@ class HandTracker:
         print("=== SISTEM GESTURE CONTROL ===")
         print("Kontrol dengan 2 tangan:")
         print("\n👈 TANGAN KIRI (Movement - WASD):")
-        print("   - 1 jari lurus: MAJU (W)")
-        print("   - 1 jari miring kanan: KANAN (D)")
-        print("   - 1 jari miring kiri: KIRI (A)")
-        print("   - 2 jari: MUNDUR (S)")
+        print("   - ✊ Kepal: MAJU (W)")
+        print("   - 🖐️  5 Jari: MUNDUR (S)")
+        print("   - 👍 Telunjuk + Jempol: KANAN (D)")
+        print("   - ✌️  Telunjuk + Tengah: KIRI (A)")
         print("\n👉 TANGAN KANAN (Vertical + Rotation):")
-        print("   - 1 jari lurus: NAIK (UP)")
-        print("   - 2 jari: TURUN (DOWN)")
-        print("   - 1 jari miring kanan: ROTASI KANAN")
-        print("   - 1 jari miring kiri: ROTASI KIRI")
+        print("   - ✊ Kepal: NAIK (UP)")
+        print("   - 🖐️  5 Jari: TURUN (DOWN)")
+        print("   - ✌️  Telunjuk + Tengah: ROTASI KANAN")
+        print("   - 👍 Telunjuk + Jempol: ROTASI KIRI")
         print("\nTekan 'q' untuk keluar")
         print("=" * 50)
         
@@ -201,14 +232,19 @@ class HandTracker:
                     x = int(wrist.x * frame_width)
                     y = int(wrist.y * frame_height)
                     
-                    # Draw finger count for debugging
-                    finger_count = self.count_fingers(hand_landmarks.landmark)
-                    tilt = self.get_hand_tilt(hand_landmarks.landmark)
+                    # Draw finger count and which fingers are up for debugging
+                    finger_count, fingers_up = self.count_fingers(hand_landmarks.landmark, hand_label)
+                    finger_names = ["Thumb", "Index", "Middle", "Ring", "Pinky"]
+                    fingers_up_str = ", ".join([finger_names[i] for i in range(5) if fingers_up[i]])
                     
                     cv2.putText(processed_frame, f"{hand_label}: {finger_count} fingers", 
                                (x - 50, y - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
-                    cv2.putText(processed_frame, f"Tilt: {tilt}", 
-                               (x - 50, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
+                    if fingers_up_str:
+                        cv2.putText(processed_frame, fingers_up_str, 
+                                   (x - 50, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 0), 1)
+                    else:
+                        cv2.putText(processed_frame, "Fist", 
+                                   (x - 50, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (255, 255, 0), 1)
             
             # Display detected gestures
             y_offset = 30
