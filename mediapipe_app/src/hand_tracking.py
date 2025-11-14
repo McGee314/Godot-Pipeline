@@ -13,9 +13,9 @@ class HandTracker:
         self.mp_drawing = mp.solutions.drawing_utils
         self.hands = self.mp_hands.Hands(
             static_image_mode=False,
-            max_num_hands=1,
-            min_detection_confidence=0.5,
-            min_tracking_confidence=0.5
+            max_num_hands=2,  # Detect 2 hands (left and right)
+            min_detection_confidence=0.7,
+            min_tracking_confidence=0.7
         )
         
         # UDP Configuration for Godot communication
@@ -37,7 +37,7 @@ class HandTracker:
     def detect_hands(self, frame):
         """
         Detect hands in frame
-        Returns: (hand_landmarks, processed_frame)
+        Returns: (results, processed_frame) - results contains multi_hand_landmarks and multi_handedness
         """
         # Convert BGR to RGB
         rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -45,49 +45,105 @@ class HandTracker:
         # Process the frame
         results = self.hands.process(rgb_frame)
         
-        hand_landmarks = None
         if results.multi_hand_landmarks:
-            # Draw hand landmarks
+            # Draw hand landmarks for all detected hands
             for hand_landmark in results.multi_hand_landmarks:
                 self.mp_drawing.draw_landmarks(
                     frame, hand_landmark, self.mp_hands.HAND_CONNECTIONS)
-                hand_landmarks = hand_landmark
                 
-        return hand_landmarks, frame
+        return results, frame
     
-    def get_gesture_direction(self, landmarks, frame_width, frame_height):
+    def count_fingers(self, landmarks):
         """
-        Determine gesture direction based on hand position
-        Returns: direction string (UP, DOWN, LEFT, RIGHT, CENTER)
+        Count number of extended fingers
+        Returns: number of fingers up (0-5)
         """
-        if landmarks is None:
-            return "NO_HAND"
+        # Finger tip and PIP landmark indices
+        finger_tips = [4, 8, 12, 16, 20]  # Thumb, Index, Middle, Ring, Pinky
+        finger_pips = [3, 6, 10, 14, 18]  # PIP joints
         
-        # Get wrist position (landmark 0)
-        wrist = landmarks.landmark[0]
-        wrist_x = int(wrist.x * frame_width)
-        wrist_y = int(wrist.y * frame_height)
+        fingers_up = 0
         
-        # Define screen regions
-        center_x = frame_width // 2
-        center_y = frame_height // 2
-        threshold = 100  # Pixel threshold for gesture detection
+        # Thumb (special case - check horizontal distance)
+        if landmarks[finger_tips[0]].x < landmarks[finger_pips[0]].x:
+            fingers_up += 1
         
-        # Determine direction based on wrist position relative to center
-        if wrist_y < center_y - threshold:
-            return "UP"
-        elif wrist_y > center_y + threshold:
-            return "DOWN"
-        elif wrist_x < center_x - threshold:
-            return "LEFT"
-        elif wrist_x > center_x + threshold:
+        # Other 4 fingers (check if tip is above PIP)
+        for i in range(1, 5):
+            if landmarks[finger_tips[i]].y < landmarks[finger_pips[i]].y:
+                fingers_up += 1
+        
+        return fingers_up
+    
+    def get_hand_tilt(self, landmarks):
+        """
+        Detect if hand is tilted left or right based on wrist and middle finger base
+        Returns: "LEFT", "RIGHT", or "STRAIGHT"
+        """
+        wrist = landmarks[0]
+        middle_base = landmarks[9]
+        
+        # Calculate horizontal distance
+        x_diff = middle_base.x - wrist.x
+        
+        # Threshold for tilt detection
+        tilt_threshold = 0.05
+        
+        if x_diff > tilt_threshold:
             return "RIGHT"
+        elif x_diff < -tilt_threshold:
+            return "LEFT"
         else:
-            return "CENTER"
+            return "STRAIGHT"
+    
+    def detect_gesture(self, landmarks, hand_label):
+        """
+        Detect gesture based on finger count and hand tilt
+        
+        Left hand gestures (WASD movement):
+        - 1 finger straight: FORWARD (W)
+        - 1 finger tilted right: RIGHT (D)
+        - 1 finger tilted left: LEFT (A)
+        - 2 fingers: BACKWARD (S)
+        
+        Right hand gestures (Vertical + Rotation):
+        - 1 finger straight: UP
+        - 2 fingers: DOWN
+        - 1 finger tilted right: ROTATE_RIGHT
+        - 1 finger tilted left: ROTATE_LEFT
+        
+        Returns: gesture command string
+        """
+        finger_count = self.count_fingers(landmarks)
+        hand_tilt = self.get_hand_tilt(landmarks)
+        
+        if hand_label == "Left":  # Left hand = WASD
+            if finger_count == 1:
+                if hand_tilt == "RIGHT":
+                    return "RIGHT"  # D
+                elif hand_tilt == "LEFT":
+                    return "LEFT"  # A
+                else:
+                    return "FORWARD"  # W
+            elif finger_count == 2:
+                return "BACKWARD"  # S
+        
+        elif hand_label == "Right":  # Right hand = Up/Down + Rotation
+            if finger_count == 1:
+                if hand_tilt == "RIGHT":
+                    return "ROTATE_RIGHT"
+                elif hand_tilt == "LEFT":
+                    return "ROTATE_LEFT"
+                else:
+                    return "UP"  # Straight up
+            elif finger_count == 2:
+                return "DOWN"
+        
+        return None
     
     def gesture_control_system(self):
         """
-        Hand tracking gesture control system
+        Hand tracking gesture control system with 2 hands
         """
         cap = cv2.VideoCapture(0)
         
@@ -96,9 +152,19 @@ class HandTracker:
             return
             
         print("=== SISTEM GESTURE CONTROL ===")
-        print("Gunakan tangan Anda untuk kontrol:")
-        print("- Gerakkan tangan ke ATAS, BAWAH, KIRI, atau KANAN")
-        print("- Tekan 'q' untuk keluar")
+        print("Kontrol dengan 2 tangan:")
+        print("\n👈 TANGAN KIRI (Movement - WASD):")
+        print("   - 1 jari lurus: MAJU (W)")
+        print("   - 1 jari miring kanan: KANAN (D)")
+        print("   - 1 jari miring kiri: KIRI (A)")
+        print("   - 2 jari: MUNDUR (S)")
+        print("\n👉 TANGAN KANAN (Vertical + Rotation):")
+        print("   - 1 jari lurus: NAIK (UP)")
+        print("   - 2 jari: TURUN (DOWN)")
+        print("   - 1 jari miring kanan: ROTASI KANAN")
+        print("   - 1 jari miring kiri: ROTASI KIRI")
+        print("\nTekan 'q' untuk keluar")
+        print("=" * 50)
         
         while True:
             ret, frame = cap.read()
@@ -111,38 +177,60 @@ class HandTracker:
             frame_height, frame_width = frame.shape[:2]
             
             # Detect hands
-            landmarks, processed_frame = self.detect_hands(frame)
+            results, processed_frame = self.detect_hands(frame)
             
-            # Get gesture direction
-            direction = self.get_gesture_direction(landmarks, frame_width, frame_height)
+            # Process each detected hand
+            left_gesture = None
+            right_gesture = None
             
-            # Draw direction on screen
-            if direction != "NO_HAND":
-                color = (0, 255, 0) if direction != "CENTER" else (255, 255, 0)
-                cv2.putText(processed_frame, f"ARAH: {direction}", 
-                           (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
-                print(f"Gesture detected: {direction}")
-                # Send gesture to Godot via UDP
-                self.send_gesture_to_godot(direction)
-            else:
-                cv2.putText(processed_frame, "Tidak ada tangan terdeteksi", 
-                           (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            if results.multi_hand_landmarks and results.multi_handedness:
+                for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
+                    # Get hand label (Left or Right)
+                    hand_label = handedness.classification[0].label
+                    
+                    # Detect gesture for this hand
+                    gesture = self.detect_gesture(hand_landmarks.landmark, hand_label)
+                    
+                    if hand_label == "Left":
+                        left_gesture = gesture
+                    else:
+                        right_gesture = gesture
+                    
+                    # Draw hand label on screen
+                    wrist = hand_landmarks.landmark[0]
+                    x = int(wrist.x * frame_width)
+                    y = int(wrist.y * frame_height)
+                    
+                    # Draw finger count for debugging
+                    finger_count = self.count_fingers(hand_landmarks.landmark)
+                    tilt = self.get_hand_tilt(hand_landmarks.landmark)
+                    
+                    cv2.putText(processed_frame, f"{hand_label}: {finger_count} fingers", 
+                               (x - 50, y - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
+                    cv2.putText(processed_frame, f"Tilt: {tilt}", 
+                               (x - 50, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 0), 2)
             
-            # Draw center lines for reference
-            cv2.line(processed_frame, (frame_width//2, 0), 
-                    (frame_width//2, frame_height), (255, 255, 255), 1)
-            cv2.line(processed_frame, (0, frame_height//2), 
-                    (frame_width, frame_height//2), (255, 255, 255), 1)
+            # Display detected gestures
+            y_offset = 30
+            if left_gesture:
+                cv2.putText(processed_frame, f"LEFT HAND: {left_gesture}", 
+                           (10, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+                self.send_gesture_to_godot(left_gesture)
+                y_offset += 35
             
-            # Draw zones
-            cv2.putText(processed_frame, "UP", (frame_width//2-20, 30), 
-                       cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-            cv2.putText(processed_frame, "DOWN", (frame_width//2-30, frame_height-10), 
-                       cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-            cv2.putText(processed_frame, "LEFT", (10, frame_height//2), 
-                       cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-            cv2.putText(processed_frame, "RIGHT", (frame_width-80, frame_height//2), 
-                       cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
+            if right_gesture:
+                cv2.putText(processed_frame, f"RIGHT HAND: {right_gesture}", 
+                           (10, y_offset), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
+                self.send_gesture_to_godot(right_gesture)
+                y_offset += 35
+            
+            if not left_gesture and not right_gesture:
+                cv2.putText(processed_frame, "Tunjukkan tangan Anda", 
+                           (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 255), 2)
+            
+            # Draw instruction overlay
+            cv2.putText(processed_frame, "L: WASD | R: UP/DOWN/Rotation", 
+                       (10, frame_height - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
             
             cv2.imshow('Hand Gesture Control', processed_frame)
             

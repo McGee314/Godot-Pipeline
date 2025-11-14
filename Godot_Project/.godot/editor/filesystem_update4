@@ -1,10 +1,7 @@
-res://Scene/WorldEnv.tscn
-res://Scene/WorldCollision.tres
-res://Scene/webcam_client_udp.tscn
-res://Scene/GestureControl.tscn
-res://Scene/Tiles.tscn
-res://Scene/sketchfab_scene.tscn
-res://Scene/Drone.tscn
-res://World.tres
-res://Scene/Polban.tscn
+res://Scene/Main_UI.tscn
 res://Wolrd2.tres
+res://Scripts/main_ui.gd
+res://Scene/WorldEnv.tscn
+res://Scene/Welcome.tscn
+res://Scene/Karya1.tscn
+res://Scene/Login.tscn

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bor1868kwtvpc"]
+
+[ext_resource type="PackedScene" uid="uid://2k8uxodb882k" path="res://Models/Modular Dungeon Kit 1.0/Models/GLB format/corridor-corner.glb" id="1_da3bi"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_eplhg"]
+points = PackedVector3Array(1.01493, 3.04815, 0.596687, -1.99148, -2.22045e-16, -1.99148, -1.99148, -2.22045e-16, 1.99148, 1.99188, 0, -1.99188, -2, 2.99266, -2, -2, 2.99266, 2, 2, 2.99266, -2, 0.8284, 0.0763404, 0.8284, -0.485398, 2.95069, 1.6987, 1.6987, 0.0392689, -0.485398, -0.485398, 0.0389719, 1.6987, 0.253769, 3.14255, -0.127282, 1.6987, 2.95069, -0.485398, 0.486028, 3.07528, 1.09394, -0.190128, 3.14255, 0.380654, 1.09403, 3.07488, 0.485899, 0.771471, 3.03967, 0.890131, 0.380654, 3.14255, -0.190526, -1.69708, 0.040417, 1.93974, 1.93974, 0.0407137, -1.69708, -0.236772, 0.0748511, 1.54013, 1.54013, 0.075141, -0.236772, 0.890273, 3.03929, 0.771272)
+
+[node name="corridor-corner2" instance=ExtResource("1_da3bi")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="corridor-corner" index="0"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="corridor-corner/StaticBody3D" index="0"]
+shape = SubResource("ConvexPolygonShape3D_eplhg")
