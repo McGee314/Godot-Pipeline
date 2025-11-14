@@ -1,291 +1,540 @@
-# MediaPipe Face Detection & Hand Tracking Application
+# MediaPipe Face Detection & Hand Gesture Control
 
-Aplikasi Python sederhana menggunakan MediaPipe untuk Face Detection dan Hand Tracking.
+Aplikasi Python untuk Face Detection Login dan Hand Gesture Control menggunakan MediaPipe, dengan integrasi Godot Engine untuk kontrol drone/game real-time via UDP.
 
-## Fitur
+## 🎯 Fitur Utama
 
-1. **Face Detection Login** - Login menggunakan deteksi wajah
-2. **Hand Gesture Control** - Kontrol gesture menggunakan tracking tangan (UP, DOWN, LEFT, RIGHT)
-3. **🎮 Integrasi Godot** - Kontrol objek 3D di Godot Engine dengan gesture tangan real-time via UDP
+1. **Face Detection Login** 
+   - Login sistem menggunakan deteksi wajah MediaPipe
+   - Streaming video via UDP ke Godot
+   - Deteksi wajah dengan confidence threshold 70%
+   
+2. **Hand Gesture Control** 
+   - Kontrol 2 tangan simultan (kiri & kanan)
+   - 8 gesture berbeda untuk kontrol lengkap
+   - Real-time gesture recognition
+   - UDP communication dengan Godot (port 9999)
+   
+3. **🎮 Integrasi Godot Engine**
+   - Kontrol drone 3D di Godot dengan gesture tangan
+   - Face detection login di Godot
+   - Real-time UDP communication
+   - Scene flow: Main_UI → Login → WorldEnv (game)
 
-## Struktur Project
+## 📁 Struktur Project
 
 ```
 Pipeline/
-├── mediapipe_env/           # Virtual environment
-├── mediapipe_app/           # Folder aplikasi utama
+├── mediapipe_env/           # Virtual environment Python
+├── mediapipe_app/           # Aplikasi Python utama
 │   ├── src/                 # Core functionality
-│   │   ├── __init__.py
-│   │   ├── face_detection.py    # Face detection engine
-│   │   └── hand_tracking.py     # Hand tracking engine
-│   ├── gui/                 # GUI components
-│   │   ├── __init__.py
-│   │   ├── main_window.py       # Main GUI window
-│   │   ├── face_login_window.py # Face detection GUI
-│   │   └── hand_gesture_window.py # Hand tracking GUI
-│   ├── utils/               # Utility functions
-│   ├── main.py              # Terminal version
-│   ├── gui_app.py           # GUI version entry point
-│   ├── requirements.txt     # Dependencies
-│   └── README.md            # Documentation
-├── run_gui.sh              # GUI launcher (macOS/Linux)
-├── run_gui.bat             # GUI launcher (Windows)
-├── run_app.sh              # Terminal launcher
-├── test_gesture_udp.py     # Test UDP gesture connection
-├── WebcamServer.py         # UDP webcam streaming server
-└── Godot_Project/          # Godot Engine integration
-    ├── gesture_receiver.gd      # Gesture UDP receiver script
-    ├── GestureControl.tscn      # Scene with gesture control
-    ├── GESTURE_INTEGRATION.md   # Integration documentation
-    └── Models/                  # 3D models (e.g., drone)
+│   │   ├── face_detection.py    # MediaPipe face detection
+│   │   └── hand_tracking.py     # MediaPipe hand tracking & gesture
+│   ├── main.py              # Entry point - Hand Gesture Control
+│   ├── login.py             # Face detection video streamer (UDP)
+│   ├── requirements.txt     # Python dependencies
+│   └── README.md
+├── Godot_Project/          # Godot 4.x integration
+│   ├── Scene/
+│   │   ├── Main_UI.tscn         # Main menu
+│   │   ├── Login.tscn           # Face detection login UI
+│   │   ├── WorldEnv.tscn        # Game scene with drone
+│   │   └── GestureControl.tscn  # Gesture control scene
+│   ├── Scripts/
+│   │   ├── main_ui.gd           # Main menu controller
+│   │   ├── login.gd             # Login + UDP video receiver
+│   │   ├── drone.gd             # Drone flight controls
+│   │   └── gesture_receiver.gd  # Gesture UDP receiver
+│   └── Models/                  # 3D models
+├── Keperluan Dokumentasi/   # Gesture images untuk dokumentasi
+│   ├── FORWARD.png
+│   ├── BACKWARD.png
+│   ├── LEFT.png
+│   ├── RIGHT.png
+│   ├── UP.png
+│   ├── DOWN.png
+│   ├── ROTATE_LEFT.png
+│   └── ROTATE_RIGHT.png
+├── GESTURE_CONTROL_GUIDE.md # 📖 Panduan lengkap gesture control
+├── CARA_PAKAI_BARU.md       # Panduan login system baru
+└── README.md                # Dokumentasi utama (file ini)
 ```
 
-## Cara Setup dan Menjalankan
+## 🚀 Quick Start
 
-### 1. Persiapan Virtual Environment
+### 1. Setup Virtual Environment
 
 ```bash
-# Buat virtual environment
+# Buat virtual environment (jika belum ada)
 python3 -m venv mediapipe_env
 
-# Aktivasi virtual environment (macOS/Linux)
-source mediapipe_env/bin/activate
-
-# Aktivasi virtual environment (Windows)
-mediapipe_env\Scripts\activate
+# Aktivasi virtual environment
+source mediapipe_env/bin/activate  # macOS/Linux
+# atau
+mediapipe_env\Scripts\activate     # Windows
 ```
 
 ### 2. Install Dependencies
 
 ```bash
-# Install dari requirements.txt
-pip install -r mediapipe_app/requirements.txt
-
-# Atau install manual satu per satu
-pip install mediapipe==0.10.21
-pip install opencv-python==4.8.1.78
-pip install numpy==1.24.3
-pip install pillow
+cd mediapipe_app
+pip install -r requirements.txt
 ```
 
 ### 3. Jalankan Aplikasi
 
-#### GUI Version (Direkomendasikan) 🎨
+#### A. Hand Gesture Control (Direct)
 ```bash
-# Jalankan menggunakan script otomatis
-./run_gui.sh          # macOS/Linux
-# atau
-run_gui.bat           # Windows
-
-# Atau jalankan manual
-cd mediapipe_app
-python gui_app.py
-```
-
-#### Terminal Version 💻
-```bash
-# Masuk ke folder aplikasi
-cd mediapipe_app
-
-# Jalankan aplikasi terminal
-python main.py
-```
-
-## Cara Menggunakan
-
-### GUI Version (User-Friendly) 🎨
-
-#### 1. Aplikasi Utama
-- Aplikasi akan membuka dengan window GUI yang menarik
-- Anda akan melihat status login dan tombol-tombol utama
-- Interface sudah sangat intuitif dan mudah dipahami
-
-#### 2. Face Detection Login
-1. Klik tombol "🔐 Login dengan Face Detection"
-2. Window kamera akan terbuka dengan preview real-time
-3. Posisikan wajah di tengah layar
-4. Progress bar akan menunjukkan tingkat deteksi
-5. Login berhasil ketika progress bar mencapai 100%
-6. Window akan menutup otomatis setelah login berhasil
-
-#### 3. Hand Gesture Control  
-1. Setelah login berhasil, klik "👋 Hand Gesture Control"
-2. Window tracking akan terbuka dengan panel kontrol
-3. Klik "▶️ Mulai Tracking" untuk mengaktifkan kamera
-4. Gerakkan tangan untuk melihat deteksi real-time:
-   - **ATAS** - untuk arah UP (biru)
-   - **BAWAH** - untuk arah DOWN (merah)  
-   - **KIRI** - untuk arah LEFT (kuning)
-   - **KANAN** - untuk arah RIGHT (hijau)
-5. Panel kanan menunjukkan statistik dan indikator arah
-6. Klik "⏹️ Berhenti" untuk menghentikan tracking
-
-### Terminal Version (Advanced) 💻
-
-#### 1. Menu Utama
-Setelah aplikasi dijalankan, Anda akan melihat menu:
-- **1. Login dengan Face Detection** - Untuk login menggunakan wajah
-- **2. Hand Gesture Control** - Untuk kontrol gesture (harus login dulu)
-- **3. Keluar** - Untuk keluar dari aplikasi
-
-#### 2. Face Detection Login
-1. Pilih menu "1" untuk login
-2. Posisikan wajah di depan kamera
-3. Pastikan pencahayaan cukup dan wajah terlihat jelas
-4. Sistem akan mendeteksi wajah selama 2 detik
-5. Jika berhasil, akan muncul "LOGIN SUCCESS!"
-6. Tekan 'q' untuk keluar dari mode kamera
-
-#### 3. Hand Gesture Control
-1. Setelah login berhasil, pilih menu "2"
-2. Posisikan tangan di depan kamera
-3. Gerakkan tangan ke arah yang diinginkan
-4. Arah akan ditampilkan di layar dan terminal
-5. Tekan 'q' untuk keluar dari mode gesture
-
-## Troubleshooting
-
-### 🔧 Test Kamera dan Dependencies
-```bash
-# Jalankan test diagnostik
-python ../test_camera.py
-
-# Atau test manual
-python -c "import cv2; cap = cv2.VideoCapture(0); print('Camera OK:', cap.isOpened()); cap.release()"
-```
-
-### Error: Tidak dapat mengakses kamera
-**Penyebab umum:**
-- Kamera sedang digunakan aplikasi lain (Zoom, Teams, browser, dll)
-- Permission kamera ditolak sistem operasi
-- Driver kamera bermasalah
-
-**Solusi:**
-1. **Tutup aplikasi lain** yang menggunakan kamera
-2. **Check permission:**
-   - **macOS**: System Preferences > Security & Privacy > Camera
-   - **Windows**: Settings > Privacy > Camera  
-   - **Linux**: `sudo usermod -a -G video $USER`
-3. **Restart aplikasi** atau komputer
-4. **Coba kamera external** jika built-in camera bermasalah
-
-### Error: ModuleNotFoundError
-- Pastikan virtual environment sudah diaktifkan
-- Install ulang dependencies: `pip install -r requirements.txt`
-
-### Error: ImportError atau dependency conflicts
-- Hapus virtual environment dan buat ulang:
-  ```bash
-  rm -rf mediapipe_env
-  python3 -m venv mediapipe_env
-  source mediapipe_env/bin/activate
-  pip install -r mediapipe_app/requirements.txt
-  ```
-
-### Deteksi wajah/tangan tidak akurat
-- **Pencahayaan**: Pastikan ruangan cukup terang, hindari backlight
-- **Jarak**: Posisikan 30-60 cm dari kamera  
-- **Background**: Gunakan background kontras dengan wajah/tangan
-- **Stabilitas**: Gerakkan wajah/tangan secara perlahan
-
-### GUI tidak muncul / Error tkinter
-- **macOS**: Install Python dengan tkinter: `brew install python-tk`
-- **Linux**: Install tkinter: `sudo apt-get install python3-tk`
-- **Windows**: Tkinter biasanya sudah included
-
-### 📋 Quick Diagnostics
-Jika masalah berlanjut, lihat file `../CAMERA_TROUBLESHOOTING.md` untuk panduan lengkap.
-
-## Persyaratan Sistem
-
-- **Python**: 3.8 atau lebih tinggi
-- **Kamera**: Webcam atau kamera laptop yang berfungsi
-- **RAM**: Minimal 4GB (recommended 8GB)
-- **OS**: Windows 10+, macOS 10.15+, atau Linux Ubuntu 18.04+
-
-## Dependencies
-
-- `mediapipe==0.10.21` - Library untuk face detection dan hand tracking
-- `opencv-python==4.12.0.88` - Library untuk computer vision
-- `numpy>=1.21.0,<2.0.0` - Library untuk operasi array
-
-## Perintah Lengkap dari Awal
-
-```bash
-# 1. Buat dan masuk ke direktori project
-mkdir mediapipe_project
-cd mediapipe_project
-
-# 2. Buat virtual environment
-python3 -m venv mediapipe_env
-
-# 3. Aktivasi virtual environment
-source mediapipe_env/bin/activate  # macOS/Linux
-# atau
-mediapipe_env\Scripts\activate     # Windows
-
-# 4. Install dependencies
-pip install mediapipe opencv-python "numpy<2"
-
-# 5. Buat struktur folder dan file (jika belum ada)
-mkdir -p mediapipe_app/src
-
-# 6. Jalankan aplikasi
 cd mediapipe_app
 python main.py
 ```
+**Kegunaan:** Langsung buka kamera untuk gesture control tanpa login
 
-## Tips dan Best Practices
+#### B. Face Detection Login (UDP Streaming ke Godot)
+```bash
+cd mediapipe_app
+python login.py
+```
+**Kegunaan:** Stream video dengan face detection ke Godot untuk login system
 
-1. **Lighting**: Pastikan pencahayaan ruangan cukup untuk deteksi optimal
-2. **Distance**: Jarak ideal antara kamera dan wajah/tangan: 30-60 cm
-3. **Background**: Gunakan background yang kontras untuk hasil lebih baik
-4. **Stabilitas**: Gerakkan tangan secara perlahan untuk gesture yang stabil
-5. **Performance**: Tutup aplikasi lain yang menggunakan kamera untuk performa optimal
+---
+
+## 🎮 Hand Gesture Control - Panduan Lengkap
+
+### Kontrol 2 Tangan Simultan
+
+Sistem menggunakan **2 tangan** untuk kontrol penuh:
+- **👈 Tangan Kiri**: Movement (WASD - maju, mundur, kiri, kanan)
+- **👉 Tangan Kanan**: Vertical + Rotation (naik, turun, rotasi)
+
+---
+
+### 👈 Tangan Kiri - Movement (WASD)
+
+| Gesture | Gambar | Jari | Aksi | Kegunaan |
+|---------|--------|------|------|----------|
+| **✊ KEPAL** | ![FORWARD](Keperluan%20Dokumentasi/FORWARD.png) | 0 jari | FORWARD (W) | Drone maju |
+| **🖐️ TERBUKA** | ![BACKWARD](Keperluan%20Dokumentasi/BACKWARD.png) | 5 jari | BACKWARD (S) | Drone mundur |
+| **👍 Telunjuk+Jempol** | ![RIGHT](Keperluan%20Dokumentasi/RIGHT.png) | 2 jari | RIGHT (D) | Drone ke kanan |
+| **✌️ Telunjuk+Tengah** | ![LEFT](Keperluan%20Dokumentasi/LEFT.png) | 2 jari | LEFT (A) | Drone ke kiri |
+
+---
+
+### 👉 Tangan Kanan - Vertical + Rotation
+
+| Gesture | Gambar | Jari | Aksi | Kegunaan |
+|---------|--------|------|------|----------|
+| **✊ KEPAL** | ![UP](Keperluan%20Dokumentasi/UP.png) | 0 jari | UP | Drone naik |
+| **🖐️ TERBUKA** | ![DOWN](Keperluan%20Dokumentasi/DOWN.png) | 5 jari | DOWN | Drone turun |
+| **✌️ Telunjuk+Tengah** | ![ROTATE_RIGHT](Keperluan%20Dokumentasi/ROTATE_RIGHT.png) | 2 jari | ROTATE_RIGHT | Putar kanan (yaw) |
+| **👍 Telunjuk+Jempol** | ![ROTATE_LEFT](Keperluan%20Dokumentasi/ROTATE_LEFT.png) | 2 jari | ROTATE_LEFT | Putar kiri (yaw) |
+
+---
+
+### 💡 Tips Penggunaan Gesture
+
+#### 1. **Posisi Optimal**
+- **Jarak kamera**: 30-50 cm dari wajah
+- Pastikan kedua tangan dalam frame
+- Latar belakang kontras membantu deteksi
+
+#### 2. **Pencahayaan**
+- Gunakan pencahayaan **terang dan merata**
+- Hindari backlight (cahaya dari belakang)
+- Pencahayaan dari depan/samping lebih baik
+
+#### 3. **Gesture yang Jelas**
+- Buat gesture dengan **tegas dan jelas**
+- Tahan gesture 0.5-1 detik agar terdeteksi
+- Jangan terlalu cepat berganti gesture
+
+#### 4. **Kombinasi Tangan**
+Anda bisa gunakan **kedua tangan sekaligus**:
+```
+Contoh 1: Tangan kiri KEPAL (maju) + Tangan kanan KEPAL (naik)
+         = Drone maju sambil naik
+
+Contoh 2: Tangan kiri Telunjuk+Tengah (kiri) + Tangan kanan Telunjuk+Jempol (rotasi kiri)
+         = Strafe kiri sambil putar kiri
+```
+
+#### 5. **Debug Info**
+Di layar akan muncul:
+- Label tangan (Left/Right)
+- Jumlah jari terdeteksi
+- Nama jari yang terangkat (Thumb, Index, Middle, Ring, Pinky)
+- Gesture yang terdeteksi (FORWARD, LEFT, UP, dll)
+
+---
+
+### 📊 Ringkasan Kontrol
+
+| Tangan | Gesture | Jari | Command | Game Action |
+|--------|---------|------|---------|-------------|
+| Kiri | ✊ Kepal | 0 | FORWARD | Maju (W) |
+| Kiri | 🖐️ Terbuka | 5 | BACKWARD | Mundur (S) |
+| Kiri | 👍 Tel+Jempol | 2 | RIGHT | Kanan (D) |
+| Kiri | ✌️ Tel+Tengah | 2 | LEFT | Kiri (A) |
+| Kanan | ✊ Kepal | 0 | UP | Naik |
+| Kanan | 🖐️ Terbuka | 5 | DOWN | Turun |
+| Kanan | ✌️ Tel+Tengah | 2 | ROTATE_RIGHT | Rotasi Kanan |
+| Kanan | 👍 Tel+Jempol | 2 | ROTATE_LEFT | Rotasi Kiri |
+
+---
+
+## 🔐 Face Detection Login System
+
+### Arsitektur Baru (Python UDP Streaming + Godot Login Logic)
+
+```
+┌─────────────┐         UDP Video Stream          ┌──────────────┐
+│  login.py   │  ─────────────────────────────>  │  login.gd    │
+│  (Python)   │     (JPEG fragmented packets)     │  (Godot)     │
+│             │                                    │              │
+│ - Stream    │                                    │ - Receive    │
+│ - MediaPipe │                                    │ - Detect     │
+│ - Detect    │                                    │ - Login      │
+│ - Annotate  │                                    │ - Manual OK  │
+└─────────────┘                                    └──────────────┘
+```
+
+### Cara Kerja:
+
+#### Python Side (`login.py`):
+1. Buka kamera dengan OpenCV
+2. Deteksi wajah dengan MediaPipe (confidence ≥70%)
+3. Gambar kotak hijau di wajah yang terdeteksi
+4. Tambahkan text: "FACE_DETECTED:1" (hijau) atau "NO_FACE_DETECTED" (merah)
+5. Encode frame ke JPEG (quality 80%)
+6. Fragment JPEG ke paket 60KB (UDP safe)
+7. Kirim via UDP ke Godot (port 5000)
+
+#### Godot Side (`login.gd`):
+1. Listen UDP port 5000
+2. Reassemble fragmented packets
+3. Display video di TextureRect (16:9)
+4. Detect wajah dengan pixel color sampling:
+   - Cari pixel hijau dari kotak MediaPipe
+   - Cari text hijau "FACE_DETECTED"
+   - Cari text merah "NO_FACE_DETECTED"
+5. Hitung frame dengan wajah terdeteksi (butuh 60 frames)
+6. Tampilkan progress: "👤 Wajah Terdeteksi: X%"
+7. Setelah 100%, enable button "🚀 LANJUT"
+8. User klik button → pindah ke WorldEnv.tscn (game)
+
+### Menjalankan Login System:
+
+**Terminal 1 - Python Streamer:**
+```bash
+cd mediapipe_app
+python login.py
+```
+
+**Terminal 2 - Godot:**
+```bash
+# Buka Godot Engine
+# Load project: Godot_Project/
+# Jalankan Main_UI.tscn (F5)
+# Klik tombol "Login"
+# Klik "CONNECT CAMERA"
+# Tunjukkan wajah ke kamera
+# Tunggu progress 100%
+# Klik "🚀 LANJUT"
+```
+
+---
 
 ## 🎮 Integrasi dengan Godot Engine
 
-### Setup Cepat
+### Scene Flow
 
-1. **Jalankan Godot Project**
-   ```bash
-   # Buka Godot Engine
-   # Load project dari folder Godot_Project/
-   # Buka scene: GestureControl.tscn
-   # Klik Play (F5)
-   ```
-
-2. **Jalankan MediaPipe Hand Tracking**
-   ```bash
-   # Terminal/Command Prompt
-   ./run_gui.sh  # atau run_gui.bat untuk Windows
-   # Pilih "Hand Gesture Control"
-   # Mulai tracking
-   ```
-
-3. **Kontrol Objek dengan Tangan**
-   - Gerakkan tangan **ATAS** → Objek bergerak forward
-   - Gerakkan tangan **BAWAH** → Objek bergerak backward
-   - Gerakkan tangan **KIRI** → Objek bergerak ke kiri
-   - Gerakkan tangan **KANAN** → Objek bergerak ke kanan
-
-### Test Koneksi UDP
-
-```bash
-# Test apakah gesture terkirim
-python test_gesture_udp.py
-# Pilih option 1 untuk sender test
-# Pilih option 2 untuk receiver test
+```
+Main_UI.tscn (Main Menu)
+    ↓ (klik tombol Login)
+Login.tscn (Face Detection)
+    ↓ (login berhasil + klik LANJUT)
+WorldEnv.tscn (Game dengan Drone)
 ```
 
+### Setup Godot Project
+
+1. **Buka Godot Engine 4.x**
+2. **Load Project**: `Godot_Project/`
+3. **Test Scene Flow**:
+   - Run `Main_UI.tscn` (F5)
+   - Klik "Login"
+   - Test login (tanpa Python → akan timeout)
+   - Quit button → kembali ke Main_UI
+
+### Drone Controls di Godot
+
+Drone di `WorldEnv.tscn` sudah dilengkapi dengan:
+
+#### Keyboard Controls (untuk testing):
+- **W/Arrow Up**: Maju / Naik vertical
+- **S/Arrow Down**: Mundur / Turun
+- **A**: Geser kiri
+- **D**: Geser kanan
+- **Arrow Left**: Rotasi kiri
+- **Arrow Right**: Rotasi kanan
+- **Left Shift**: Speed boost (8.0 → 16.0)
+- **Spasi**: Naik (khusus vertical, butuh height ≥1.0)
+
+#### Gesture Controls (via UDP port 9999):
+Sama dengan gesture table di atas, diterima via `gesture_receiver.gd`
+
+### Test Gesture Integration
+
+**Terminal 1 - Hand Gesture:**
+```bash
+cd mediapipe_app
+python main.py
+```
+
+**Terminal 2 - Godot:**
+```bash
+# Buka Godot
+# Run GestureControl.tscn atau WorldEnv.tscn
+# Drone akan merespons gesture tangan
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### Gesture Tidak Terdeteksi
+
+**Gejala:** Gesture tangan tidak terdeteksi atau salah deteksi
+
+**Solusi:**
+1. **Cek pencahayaan** - Pastikan ruangan cukup terang
+2. **Cek jarak** - Posisi 30-50cm dari kamera
+3. **Lihat debug info** - Di layar muncul jumlah jari terdeteksi
+4. **Test satu tangan** - Test tangan kiri dulu, lalu kanan
+5. **Cek background** - Gunakan background kontras
+
+**Debug info yang ditampilkan:**
+```
+Left: 2 fingers
+Thumb, Index
+LEFT HAND: RIGHT
+```
+
+### Kamera Tidak Bisa Dibuka
+
+**Penyebab:**
+- Aplikasi lain menggunakan kamera (Zoom, Teams, browser)
+- Permission ditolak sistem operasi
+- Driver kamera bermasalah
+
+**Solusi:**
+```bash
+# Test kamera
+python test_camera.py
+
+# macOS: Check permission
+# System Preferences > Security & Privacy > Camera
+
+# Windows: Check permission  
+# Settings > Privacy > Camera
+
+# Linux: Add user to video group
+sudo usermod -a -G video $USER
+```
+
+### Face Detection Salah/False Positive
+
+**Gejala:** Login terdeteksi tanpa wajah
+
+**Solusi:**
+- Sudah diperbaiki dengan pixel color detection
+- Confidence threshold ditingkatkan ke 70%
+- Deteksi text hijau "FACE_DETECTED" dari Python
+- Deteksi kotak hijau MediaPipe bounding box
+
+### UDP Tidak Terkirim
+
+**Gejala:** Gesture tidak sampai ke Godot
+
+**Solusi:**
+1. Pastikan Godot running dan listening
+2. Check port tidak dipakai aplikasi lain
+3. Firewall allow port 9999 (gesture) dan 5000 (video)
+4. Test dengan netcat:
+   ```bash
+   echo "test" | nc -u 127.0.0.1 9999
+   ```
+
+### ModuleNotFoundError
+
+**Solusi:**
+```bash
+# Pastikan virtual env aktif
+source mediapipe_env/bin/activate
+
+# Install ulang dependencies
+cd mediapipe_app
+pip install -r requirements.txt
+```
+
+---
+
+## 📋 Persyaratan Sistem
+
+### Hardware
+- **Kamera**: Webcam built-in atau eksternal
+- **RAM**: Minimum 4GB (recommended 8GB)
+- **Processor**: Intel Core i5 atau setara
+- **Storage**: 500MB untuk dependencies
+
+### Software
+- **Python**: 3.10+ (tested on 3.10)
+- **Godot**: 4.x (untuk integrasi game)
+- **OS**: 
+  - macOS 10.15+
+  - Windows 10+
+  - Linux Ubuntu 18.04+
+
+### Dependencies (Python)
+```
+mediapipe>=0.10.0
+opencv-python>=4.8.0
+numpy<2.0.0
+```
+
+---
+
+## 📚 Dokumentasi Tambahan
+
 ### Dokumentasi Lengkap
+- 📖 **[GESTURE_CONTROL_GUIDE.md](GESTURE_CONTROL_GUIDE.md)** - Panduan lengkap gesture control dengan gambar
+- 📖 **[CARA_PAKAI_BARU.md](CARA_PAKAI_BARU.md)** - Panduan login system baru
+- 📖 **Godot_Project/GESTURE_INTEGRATION.md** - Integrasi Godot
 
-Lihat dokumentasi lengkap integrasi Godot di:
-📖 `Godot_Project/GESTURE_INTEGRATION.md`
+### Quick Reference
+```bash
+# Hand Gesture Control
+cd mediapipe_app && python main.py
 
-### Troubleshooting Godot
+# Face Detection Streaming
+cd mediapipe_app && python login.py
 
-- **Port conflict**: Pastikan port 9999 tidak dipakai aplikasi lain
-- **No movement**: Check Inspector → GestureReceiver → controlled_object
-- **Too fast/slow**: Adjust `move_speed` di Inspector (default: 5.0)
-- **Firewall**: Allow UDP port 9999 in firewall settings
+# Test kamera
+python test_camera.py
+
+# Godot
+# Buka Godot > Load Godot_Project/ > Run Main_UI.tscn
+```
+
+---
+
+## 🎯 Workflow Lengkap
+
+### Skenario 1: Main Tanpa Login (Gesture Only)
+
+```bash
+# Terminal
+cd mediapipe_app
+python main.py
+# Tunjukkan gesture tangan
+# Tekan 'q' untuk keluar
+```
+
+### Skenario 2: Main dengan Login + Game Godot
+
+**Step 1 - Start Python Face Detection:**
+```bash
+# Terminal 1
+cd mediapipe_app
+python login.py
+# Biarkan running
+```
+
+**Step 2 - Start Godot:**
+```bash
+# Buka Godot Engine
+# Load project: Godot_Project/
+# Run Main_UI.tscn (F5)
+# Klik "Login"
+# Klik "CONNECT CAMERA"
+# Tunjukkan wajah
+# Tunggu progress 100%
+# Klik "🚀 LANJUT"
+```
+
+**Step 3 - Start Hand Gesture Control:**
+```bash
+# Terminal 2 (baru)
+cd mediapipe_app
+python main.py
+# Gesture akan mengontrol drone di Godot
+```
+
+**Step 4 - Play the Game:**
+```
+- Gunakan gesture untuk terbangkan drone
+- Atau gunakan keyboard (WASD, arrows, shift)
+- Explore dungeon dengan drone
+```
+
+---
+
+## 🚀 Teknologi yang Digunakan
+
+### Python Stack
+- **MediaPipe**: Hand landmarks (21 points/hand) & Face detection
+- **OpenCV**: Video capture, image processing, JPEG encoding
+- **NumPy**: Array operations
+- **Socket**: UDP communication
+
+### Godot Stack
+- **GDScript**: Game logic
+- **PacketPeerUDP**: UDP networking
+- **CharacterBody3D**: Drone physics
+- **TextureRect**: Video display
+
+### Protocols
+- **UDP Port 5000**: Video streaming (Python → Godot)
+- **UDP Port 9999**: Gesture commands (Python → Godot)
+- **JPEG Encoding**: 80% quality, fragmented 60KB packets
+- **JSON**: Gesture message format
+
+### Algorithms
+- **Finger Counting**: Landmark position comparison
+- **Hand Orientation**: Left/right detection via handedness
+- **Gesture Recognition**: Finger combination detection
+- **Face Detection**: Pixel color sampling + MediaPipe confidence
+- **Packet Fragmentation**: Frame reassembly with sequence numbers
+
+---
+
+## 👥 Kontribusi
+
+Project ini dibuat untuk keperluan edukasi dan eksplorasi teknologi computer vision + game integration.
+
+**Fitur yang bisa dikembangkan:**
+- [ ] Gesture training/customization
+- [ ] Multi-player support
+- [ ] Voice commands integration
+- [ ] Mobile app (Android/iOS)
+- [ ] VR/AR integration
+
+---
+
+## 📄 License
+
+MIT License - Feel free to use and modify
+
+---
+
+## 📞 Support
+
+Jika mengalami masalah:
+1. Baca section **Troubleshooting** di atas
+2. Check dokumentasi lengkap: `GESTURE_CONTROL_GUIDE.md`
+3. Test komponen satu per satu (kamera, gesture, UDP)
+4. Lihat debug info di console/layar
+
+---
+
+**Happy Coding & Gaming! 🎮✋🚁**
